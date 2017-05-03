@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
 	<metadata>
-		<id>Gridsum.NHBaseAPI</id>
+		<id>Gridsum.NHBaseAPI.v2</id>
 		<version>$version$</version>
 		<title>Gridsum.NHBaseAPI</title>
 		<authors>Kevin Yang,Zhishen Cui,Kexin Li</authors>
