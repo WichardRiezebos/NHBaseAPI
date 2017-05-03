@@ -65,6 +65,8 @@ namespace Gridsum.NHBaseThrift.Client
 
         #region Members.
 
+        private string zkRoot = "/hbase/rs";
+
         private int _tPort;
         private ZooKeeper _zkClient;
         private IList<IPEndPoint> _regionServers;
@@ -84,6 +86,14 @@ namespace Gridsum.NHBaseThrift.Client
         private void Initialize(string connectionStr)
         {
             _arguments = connectionStr.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(v => v.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries)).ToDictionary(v => v[0].Trim(), vs => vs[1]);
+
+            string zkRoot = null;
+
+            if (_arguments.TryGetValue("zkRoot", out zkRoot))
+            {
+                this.zkRoot = zkRoot;
+            }
+
             string zkStr, zkTimeoutStr;
             if(!_arguments.TryGetValue("zk", out zkStr)) throw new ArgumentException("#Lost KEY argument: \"zk\"");
             TimeSpan zkTimeout;
@@ -130,7 +140,7 @@ namespace Gridsum.NHBaseThrift.Client
         private void UpdateRegionServers(WatchedEvent @event)
         {
             //obtains a list of remote region server address. just likes: "gs-server-1003,60020,1433640602093"
-            IEnumerable<string> children = _zkClient.GetChildren("/hbase/rs", new ZooKeeperWatcher(UpdateRegionServers));
+            IEnumerable<string> children = _zkClient.GetChildren(zkRoot, new ZooKeeperWatcher(UpdateRegionServers));
             List<IPEndPoint> regionServers = new List<IPEndPoint>();
             foreach (string rs in children)
             {
