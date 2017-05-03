@@ -284,7 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="NHBaseThrift.nuspec" />
+    <None Include="Gridsum.NHBaseThrift.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
